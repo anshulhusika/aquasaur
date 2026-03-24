@@ -40,8 +40,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/">
-          <h1 className={`font-bold tracking-tighter transition-all duration-300 cursor-pointer ${
-            scrolled ? "text-xl text-black" : "text-2xl text-white"
+          <h1 className={`font-bold tracking-tighter transition-all duration-300 cursor-pointer  ${
+            scrolled ? "text-xl text-black" : "text-2xl text-black"
           }`}>
             ShopX
           </h1>

@@ -24,3 +24,67 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.animated-gradient-text {
+  font-size: 1.5rem;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  /* Your original gradient colors */
+  background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
+  background-size: 300% auto;
+  
+  /* The Magic Clip & Fill */
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  
+  /* Dual Animation: Flowing Colors + Wavy Movement */
+  animation: 
+    gradient-flow 4s linear infinite, 
+    wave-move 3s ease-in-out infinite;
+  
+  display: inline-block;
+  transform-origin: center;
+}
+
+/* 1. The Color Flow (Horizontal) */
+@keyframes gradient-flow {
+  0% { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* 2. The Physical Wave (Vertical & Rotation) */
+@keyframes wave-move {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+.shopx-wave-text {
+  background: linear-gradient(
+    120deg, 
+    #ff00ff 20%, 
+    #ffffff 40%, 
+    #00ffff 60%, 
+    #ff00ff 80%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: wave-flow 8.5s linear infinite;
+  display: inline-block;
+}
+
+@keyframes wave-flow {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
