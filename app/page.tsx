@@ -103,20 +103,25 @@ export default function Home() {
           <h3 className="text-3xl font-bold mb-12">Trending Now</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {products.map((product) => (
-              <div 
-                key={product.id} 
-                className="group cursor-pointer"
-                onClick={() => handleOpenDrawer(product)} // OPEN DRAWER ON CLICK
-              >
-                <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-50 mb-6">
-                  <Image src={product.img} alt={product.name} fill className="object-cover group-hover:scale-105 transition duration-500" />
-                  <button className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-white/20 backdrop-blur-xl border border-white/30 text-white py-3 rounded-2xl text-sm font-bold transition-all">
-                    Quick View
-                  </button>
-                </div>
-                <h4 className="font-bold text-lg">{product.name}</h4>
-                <p className="text-gray-400 font-medium">₹{product.price}</p>
-              </div>
+             <div 
+  key={product.id} 
+  className="group cursor-pointer relative"
+  // REMOVE onClick from here if you only want the button to open the drawer
+>
+  <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-50 mb-6">
+    <Image src={product.img} alt={product.name} fill className="object-cover" />
+    
+    <button 
+      onClick={(e) => {
+        e.stopPropagation(); // Prevents the click from "bubbling" up
+        handleOpenDrawer(product);
+      }}
+      className="absolute bottom-4 left-4 right-4 z-30 bg-black/40 backdrop-blur-xl text-white py-3 rounded-2xl text-sm font-bold md:opacity-0 md:group-hover:opacity-100 transition-all active:scale-95"
+    >
+      Quick View
+    </button>
+  </div>
+</div>
             ))}
           </div>
         </div>
