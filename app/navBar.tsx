@@ -12,6 +12,7 @@ const categories = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   
   // 1. Hook into your Global Cart State
   const { cart } = useCart() as { cart: any[] }; 
@@ -24,6 +25,29 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        setUser(data.user);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setUser(null);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <header
@@ -58,9 +82,9 @@ export default function Navbar() {
           <div className="relative group py-2">
             <button className="flex items-center gap-1 hover:text-black transition-colors outline-none">
               Categories
-              <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* <svg className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-              </svg>
+              </svg> */}
             </button>
 
             {/* Sub-menu Dropdown */}
@@ -84,6 +108,33 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-5">
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className={`text-sm ${scrolled ? 'text-gray-600' : 'text-white/90'}`}>
+                Welcome, {user.name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all active:scale-95 shadow-sm ${
+                  scrolled 
+                  ? "bg-gray-200 text-black hover:bg-gray-300" 
+                  : "bg-white/20 text-white hover:bg-white/30"
+                }`}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <button className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all active:scale-95 shadow-sm ${
+                scrolled 
+                ? "bg-gray-200 text-black hover:bg-gray-300" 
+                : "bg-white/20 text-white hover:bg-white/30"
+              }`}>
+                Login
+              </button>
+            </Link>
+          )}
           <Link href="/cart">
             <button className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all active:scale-95 shadow-sm flex items-center gap-2 ${
               scrolled 
