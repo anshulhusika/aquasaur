@@ -1,19 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import { useCart } from "@/context/CartContext";
+import { useCart, CartItem } from "@/context/CartContext";
+import { useToast } from "@/context/ToastContext";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity } = useCart() as any; 
+  const { cart, removeFromCart, updateQuantity } = useCart(); 
+  const { showToast } = useToast();
   const [isCheckout, setIsCheckout] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
 
   const SHIPPING_THRESHOLD = 5000;
-  const subtotal = cart.reduce((acc: any, item: any) => {
-    const numericPrice = parseInt(item.price.replace(/,/g, ""), 10) || 0;
-    return acc + numericPrice * item.quantity;
+  const subtotal = cart.reduce((acc: number, item) => {
+    const numericPrice = typeof item.price === 'string' 
+      ? parseInt(item.price.replace(/,/g, ""), 10) 
+      : item.price;
+    return acc + (numericPrice || 0) * item.quantity;
   }, 0);
 
   const applyPromo = () => {
@@ -73,7 +77,10 @@ export default function CartPage() {
                               >+</button>
                             </div>
                             <button 
-                              onClick={() => removeFromCart(item.id)}
+                              onClick={() => {
+                                removeFromCart(item.id);
+                                showToast(`${item.name} removed from bag`, "error");
+                              }}
                               className="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-red-500"
                             >Remove</button>
                           </div>

@@ -1,30 +1,25 @@
-// import Navbar from "@/components/Navbar";
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import QuickView from "@/components/QuickView";
-// ..
- 
+import { ALL_PRODUCTS, CATEGORIES, getTrendingProducts } from "@/lib/products";
+import { Product } from "@/context/CartContext";
+
 export default function Home() {
- const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const products = [
-    { id: 1, name: "Minimalist Watch", price: "4,999", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30" },
-    { id: 2, name: "Linen Shirt", price: "2,499", img: "https://images.unsplash.com/photo-1598033129183-c4f50c7176c8" },
-    { id: 3, name: "Premium Tote", price: "1,899", img: "https://images.unsplash.com/photo-1544816155-12df9643f363" },
-    { id: 4, name: "Leather Boots", price: "7,999", img: "https://images.unsplash.com/photo-1520639889313-7272170b1c39" },
-  ];
+  // Show balanced products from different categories
+  const trendingProducts = getTrendingProducts();
 
-  const handleOpenDrawer = (product:any) => {
+  const handleOpenDrawer = (product: Product) => {
     setSelectedProduct(product);
     setIsDrawerOpen(true);
   };
+
   return (
     <div className="bg-[#fcfcfc] text-gray-900 selection:bg-black selection:text-white min-h-screen">
-      {/* Separated Navbar Component */}
-      {/* <Navbar /> */}
-{/* Quick View Component Added Here */}
       <QuickView 
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
@@ -32,13 +27,13 @@ export default function Home() {
       />
       {/* --- HERO SECTION --- */}
       <section className="relative h-[90vh] flex items-center justify-center text-center overflow-hidden">
-   <Image
-    src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2067&auto=format&fit=crop" 
-    alt="Minimalist Hero Background"
-    fill
-    priority
-    className="absolute w-full h-full object-cover scale-105"
-  />
+        <Image
+          src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2067&auto=format&fit=crop" 
+          alt="Minimalist Hero Background"
+          fill
+          priority
+          className="absolute w-full h-full object-cover scale-105"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent" />
 
         <div className="relative z-10 max-w-3xl text-white px-6">
@@ -69,88 +64,60 @@ export default function Home() {
             <h3 className="text-3xl font-bold tracking-tight">Shop by Category</h3>
             <p className="text-gray-500 mt-2 font-medium">Curated styles for every corner of your life.</p>
           </div>
-          <button className="text-sm font-bold border-b-2 border-black pb-1 hover:text-gray-500 transition-all">
-            See all categories
-          </button>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { name: "Fashion", img: "https://images.unsplash.com/photo-1521334884684-d80222895322" },
-            { name: "Electronics", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9" },
-            { name: "Living", img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511" },
-            { name: "Beauty", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9" },
-          ].map((cat) => (
-            <div key={cat.name} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer shadow-sm">
-              <Image
-                src={cat.img}
-                alt={cat.name}
-                fill
-                className="object-cover group-hover:scale-110 transition duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
-              <div className="absolute bottom-6 left-6 text-white translate-y-2 group-hover:translate-y-0 transition-all">
-                <h4 className="text-xl font-bold">{cat.name}</h4>
-                <p className="text-white/70 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Explore Items →</p>
+          {CATEGORIES.map((cat) => (
+            <Link key={cat.slug} href={`/category/${cat.slug}`}>
+              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer shadow-sm">
+                <Image
+                  src={cat.img}
+                  alt={cat.name}
+                  fill
+                  className="object-cover group-hover:scale-110 transition duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute bottom-6 left-6 text-white translate-y-2 group-hover:translate-y-0 transition-all">
+                  <h4 className="text-xl font-bold">{cat.name}</h4>
+                  <p className="text-white/70 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Explore Items →</p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
-{/* Trending Section Updated */}
-      <section className="bg-white py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <h3 className="text-3xl font-bold mb-12">Trending Now</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            {products.map((product) => (
-             <div 
-  key={product.id} 
-  className="group cursor-pointer relative"
-  // REMOVE onClick from here if you only want the button to open the drawer
->
-  <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-50 mb-6">
-    <Image src={product.img} alt={product.name} fill className="object-cover" />
-    
-    <button 
-      onClick={(e) => {
-        e.stopPropagation(); // Prevents the click from "bubbling" up
-        handleOpenDrawer(product);
-      }}
-      className="absolute bottom-4 left-4 right-4 z-30 bg-black/40 backdrop-blur-xl text-white py-3 rounded-2xl text-sm font-bold md:opacity-0 md:group-hover:opacity-100 transition-all active:scale-95"
-    >
-      Quick View
-    </button>
-  </div>
-</div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* --- FEATURED PRODUCTS --- */}
+
+      {/* --- TRENDING SECTION --- */}
       <section className="bg-white py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex justify-between items-center mb-12">
             <h3 className="text-3xl font-bold tracking-tight">Trending Now</h3>
-            <a href="#" className="text-sm font-semibold text-gray-400 hover:text-black transition-colors">View all products</a>
+            <button className="text-sm font-semibold text-gray-400 hover:text-black transition-colors">View all products</button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="group cursor-pointer">
+            {trendingProducts.map((product) => (
+              <div key={product.id} className="group cursor-pointer">
                 <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-gray-50 mb-6">
                   <Image
-                    src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f" 
-                    alt="product"
+                    src={product.img} 
+                    alt={product.name}
                     fill
                     className="object-cover group-hover:scale-105 transition duration-500"
                   />
-                  {/* Glassmorphism Quick Add Button */}
-                  <button className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-white/20 backdrop-blur-xl border border-white/30 text-white py-3 rounded-2xl text-sm font-bold transition-all duration-300 hover:bg-white hover:text-black">
-                    Quick Add +
+                  {/* Glassmorphism Quick View Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenDrawer(product);
+                    }}
+                    className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-white/20 backdrop-blur-xl border border-white/30 text-white py-3 rounded-2xl text-sm font-bold transition-all duration-300 hover:bg-white hover:text-black"
+                  >
+                    Quick View
                   </button>
                 </div>
-                <h4 className="font-bold text-lg group-hover:text-gray-600 transition-colors">Premium Product {item}</h4>
-                <p className="text-gray-400 font-medium">₹2,499.00</p>
+                <h4 className="font-bold text-lg group-hover:text-gray-600 transition-colors">{product.name}</h4>
+                <p className="text-gray-400 font-medium">₹{product.price}</p>
               </div>
             ))}
           </div>
@@ -188,9 +155,11 @@ export default function Home() {
           <div>
             <h4 className="font-bold mb-6 text-gray-300 uppercase tracking-widest text-[10px]">Shop</h4>
             <ul className="space-y-4 text-gray-500 font-medium">
-                <li className="hover:text-white transition-colors cursor-pointer">Collections</li>
-                <li className="hover:text-white transition-colors cursor-pointer">New Arrivals</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Best Sellers</li>
+                {CATEGORIES.map((cat) => (
+                  <li key={cat.slug}>
+                    <Link href={`/category/${cat.slug}`} className="hover:text-white transition-colors cursor-pointer">{cat.name}</Link>
+                  </li>
+                ))}
             </ul>
           </div>
           <div>
