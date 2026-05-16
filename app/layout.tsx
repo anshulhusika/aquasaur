@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
-import Navbar from "./navBar";
-// import Navbar from "./Navbar";  // matches exact filename
+import Navbar1 from "./navbarTEMP";
+// import Navbar1 from "./Navbar1";  // matches exact filename
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <ToastProvider>
           <CartProvider>
-            <Navbar />
+            <Navbar1 />
             {children}
           </CartProvider>
         </ToastProvider>

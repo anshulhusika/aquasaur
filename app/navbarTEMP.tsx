@@ -6,7 +6,7 @@ import { CATEGORIES } from "@/lib/products";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Navbar() {
+export default function Navbar1() {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
