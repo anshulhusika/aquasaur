@@ -125,7 +125,7 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-md py-8 md:py-12"
       >
         {/* Card */}
-        <div className="bg-white/5 backdrop-blur-3xl border border-white/10 p-7 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-2xl">
+        <div className="bg-slate-950/95 backdrop-blur-3xl border border-white/20 p-7 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-2xl ring-1 ring-white/10">
           <div className="text-center mb-8 sm:mb-10">
             <motion.div
               initial={{ scale: 0 }}
@@ -154,10 +154,10 @@ export default function LoginPage() {
                   <input
                     type="email"
                     required
-                    className={`w-full bg-white/5 border rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:bg-white/10 transition-all text-sm font-medium ${
+                    className={`w-full bg-slate-900/90 border border-white/20 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-12 pr-4 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:bg-slate-800/80 transition-all text-sm font-medium ${
                       touched.email && errors.email
                         ? 'border-red-500/50 focus:ring-red-500/30'
-                        : 'border-white/10 focus:ring-white/20'
+                        : 'border-white/20 focus:ring-white/30'
                     }`}
                     placeholder="Email Address"
                     value={email}
@@ -189,10 +189,10 @@ export default function LoginPage() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
-                    className={`w-full bg-white/5 border rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-12 pr-12 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:bg-white/10 transition-all text-sm font-medium ${
+                    className={`w-full bg-slate-900/90 border border-white/20 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-12 pr-12 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:bg-slate-800/80 transition-all text-sm font-medium ${
                       touched.password && errors.password
                         ? 'border-red-500/50 focus:ring-red-500/30'
-                        : 'border-white/10 focus:ring-white/20'
+                        : 'border-white/20 focus:ring-white/30'
                     }`}
                     placeholder={isRegister ? 'Create Password (min 6 chars)' : 'Password'}
                     value={password}
@@ -254,7 +254,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full group relative bg-white text-black py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:hover:scale-100"
+              className="w-full group relative bg-white text-black py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl border border-black/5 disabled:opacity-50 disabled:hover:scale-100"
             >
               <div className="relative z-10 flex items-center justify-center gap-2">
                 {loading ? (
